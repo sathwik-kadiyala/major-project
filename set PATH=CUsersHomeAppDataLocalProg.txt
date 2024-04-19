@@ -1,9 +1,0 @@
-set PATH=C:\Users\Home\AppData\Local\Programs\Python\Python312\python.exe
-****************************************************************************************************************************
-set PYSPARK_PYTHON=C:\Users\Home\AppData\Local\Programs\Python\Python312\python.exe
-spark-submit --master local[*] C:\Users\Home\Desktop\major\job\job.py sathwikkadiyala@gmail.com 26214233
-****************************************************************************************************************************
-
-
-Welcome2evoke@1234 mail password
-

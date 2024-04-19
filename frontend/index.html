@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,43 +52,55 @@
     }
   </style>
 </head>
+
 <body>
-    <h2>Spark E-Authentication Layer</h2>
-    <label for="usernameInput">Enter Username:</label>
-<input type="text" id="usernameInput" placeholder="Enter your username">
-    <label for="emailInput">Enter Email:</label>
-    <input type="text" id="emailInput" placeholder="Enter your email">
-    <button onclick="generateDNASequence()">Generate DNA Sequence</button>
-    <div id="result"></div>
-  
-    <script>
-      function generateDNASequence() {
-        const emailInput = document.getElementById('emailInput');
-        const resultDiv = document.getElementById('result');
-        const usernameInput = document.getElementById('usernameInput'); // New line
-        const email = emailInput.value.trim();
-        const username = usernameInput.value.trim();
-        if (!email || !username) {
-          alert('Please enter a valid email addressor username.');
-          return;
-        }
-  
-        const dnaSequence = emailToDNA(email);
-        resultDiv.textContent = `Unique key is sent to the mail.`;
-  
-        // Send email
-        sendEmail(email,username,dnaSequence);
+
+  <h2>Spark E-Authentication Layer</h2>
+
+  <label for="usernameInput">Enter Username:</label>
+  <input type="text" id="usernameInput" placeholder="Enter your username">
+
+  <label for="emailInput">Enter Email:</label>
+  <input type="text" id="emailInput" placeholder="Enter your email">
+
+  <button onclick="generateDNASequence()">Generate DNA Sequence</button>
+
+  <div id="result"></div>
+
+  <script>
+    function generateDNASequence() {
+      
+      const emailInput = document.getElementById('emailInput');
+      const resultDiv = document.getElementById('result');
+      const usernameInput = document.getElementById('usernameInput'); 
+
+      const email = emailInput.value.trim();
+      const username = usernameInput.value.trim();
+
+      if (!email || !username) {
+        alert('Please enter a valid email addressor username.');
+        return;
       }
-  
-      function emailToDNA(email) {
+
+      const dnaSequence = emailToDNA(email);
+      resultDiv.textContent = `Unique key is sent to the mail.`;
+
+      
+      sendEmail(email, username, dnaSequence);
+    }
+
+    function emailToDNA(email) {
       // Convert email to binary
       const binaryEmail = email.split('').map(char => char.charCodeAt(0).toString(2).padStart(8, '0')).join('');
 
       // Map binary pairs to DNA bases
       let dnaSequence = '';
       for (let i = 0; i < binaryEmail.length; i += 2) {
+
         const binaryPair = binaryEmail.slice(i, i + 2);
+
         switch (binaryPair) {
+
           case '00':
             dnaSequence += 'A';
             break;
@@ -100,53 +113,64 @@
           case '11':
             dnaSequence += 'T';
             break;
+
         }
+
       }
+
       dna_form = dnaSequence
-          .replace(/A/g, "0")
-          .replace(/C/g, "1")
-          .replace(/G/g, "2")
-          .replace(/T/g, "3");
+        .replace(/A/g, "0")
+        .replace(/C/g, "1")
+        .replace(/G/g, "2")
+        .replace(/T/g, "3");
 
-        const bigIntValue = BigInt(dna_form);
+      const bigIntValue = BigInt(dna_form);
 
-        // Convert the BigInt to hexadecimal
-        const hexadecimalResult = bigIntValue.toString(16).toUpperCase();
-      return hexadecimalResult.slice(0,8);
+      // Convert the BigInt to hexadecimal
+      const hexadecimalResult = bigIntValue.toString(16).toUpperCase();
+      return hexadecimalResult.slice(0, 8);
     }
-  
-      async function sendEmail(email,username, dnaSequence) {
-        try {
-          const response = await fetch('http://localhost:4000/send-email', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email,username, dnaSequence }),
-          });
-  
-          const result = await response.json();
-          console.log(result.message);
-        } catch (error) {
-          console.error('Error sending email:', error);
-        }
+
+    async function sendEmail(email, username, dnaSequence) {
+
+      try {
+        const response = await fetch('http://localhost:4000/send-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, username, dnaSequence }),
+        });
+
+        const result = await response.json();
+        console.log(result.message);
+
+      } 
+      catch (error) {
+        console.error('Error sending email:', error);
       }
-      async function sendEmailAndStoreInMongo(email, username, dnaSequence) {
-    try {
-      const response = await fetch('http://localhost:4000/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, username, dnaSequence }),
-      });
 
-      const result = await response.json();
-      console.log(result.message);
-    } catch (error) {
-      console.error('Error sending email:', error);
     }
-  }
-    </script>
-  </body>
-  </html>
+    async function sendEmailAndStoreInMongo(email, username, dnaSequence) {
+      try {
+        const response = await fetch('http://localhost:4000/send-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, username, dnaSequence }),
+        });
+
+        const result = await response.json();
+        console.log(result.message);
+
+      } 
+      catch (error) {
+        console.error('Error sending email:', error);
+      }
+    }
+  </script>
+  
+</body>
+
+</html>
